@@ -97,7 +97,7 @@ function content_type_course_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 9,
       ),
       'node_teaser' => array(
         'label' => 'above',
@@ -261,8 +261,8 @@ function content_type_course_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-course-field_course_gymnasie_program'
-  $field_instances['node-course-field_course_gymnasie_program'] = array(
+  // Exported field_instance: 'node-course-field_course_group'
+  $field_instances['node-course-field_course_group'] = array(
     'bundle' => 'course',
     'default_value' => NULL,
     'deleted' => 0,
@@ -270,9 +270,10 @@ function content_type_course_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
+        'module' => 'text',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 9,
+        'type' => 'text_default',
+        'weight' => 4,
       ),
       'node_teaser' => array(
         'label' => 'above',
@@ -284,7 +285,7 @@ function content_type_course_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -294,28 +295,32 @@ function content_type_course_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'node',
-    'field_name' => 'field_course_gymnasie_program',
-    'label' => 'Gymnasie program',
+    'field_name' => 'field_course_group',
+    'label' => 'Course Group',
     'required' => 0,
     'settings' => array(
+      'text_processing' => 0,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
-      'active' => 0,
-      'module' => 'taxonomy',
+      'active' => 1,
+      'module' => 'text',
       'settings' => array(
-        'autocomplete_path' => 'taxonomy/autocomplete',
         'size' => 60,
       ),
-      'type' => 'taxonomy_autocomplete',
-      'weight' => 6,
+      'type' => 'text_textfield',
+      'weight' => 13,
     ),
   );
 
-  // Exported field_instance: 'node-course-field_course_orientation'
-  $field_instances['node-course-field_course_orientation'] = array(
+  // Exported field_instance: 'node-course-field_course_period_type'
+  $field_instances['node-course-field_course_period_type'] = array(
     'bundle' => 'course',
-    'default_value' => NULL,
+    'default_value' => array(
+      0 => array(
+        'value' => 'default',
+      ),
+    ),
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -323,7 +328,7 @@ function content_type_course_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 5,
       ),
       'node_teaser' => array(
         'label' => 'above',
@@ -335,7 +340,7 @@ function content_type_course_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -345,21 +350,18 @@ function content_type_course_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'node',
-    'field_name' => 'field_course_orientation',
-    'label' => 'Orientation',
-    'required' => 0,
+    'field_name' => 'field_course_period_type',
+    'label' => 'Period type',
+    'required' => 1,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
     'widget' => array(
-      'active' => 0,
-      'module' => 'taxonomy',
-      'settings' => array(
-        'autocomplete_path' => 'taxonomy/autocomplete',
-        'size' => 60,
-      ),
-      'type' => 'taxonomy_autocomplete',
-      'weight' => 5,
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 14,
     ),
   );
 
@@ -511,57 +513,6 @@ function content_type_course_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-course-field_course_subject_areas'
-  $field_instances['node-course-field_course_subject_areas'] = array(
-    'bundle' => 'course',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 7,
-      ),
-      'node_teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'search_result' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 10,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_course_subject_areas',
-    'label' => 'Subject areas',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'taxonomy',
-      'settings' => array(
-        'autocomplete_path' => 'taxonomy/autocomplete',
-        'size' => 60,
-      ),
-      'type' => 'taxonomy_autocomplete',
-      'weight' => 4,
-    ),
-  );
-
   // Exported field_instance: 'node-course-field_course_template'
   $field_instances['node-course-field_course_template'] = array(
     'bundle' => 'course',
@@ -573,7 +524,7 @@ function content_type_course_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 6,
       ),
       'node_teaser' => array(
         'label' => 'above',
@@ -601,15 +552,19 @@ function content_type_course_field_default_field_instances() {
     ),
     'label' => 'Course template',
     'render_entity_below' => 1,
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_select',
+      'module' => 'entityreference',
+      'settings' => array(
+        'match_operator' => 'CONTAINS',
+        'path' => '',
+        'size' => 60,
+      ),
+      'type' => 'entityreference_autocomplete_tags',
       'weight' => 1,
     ),
   );
@@ -692,16 +647,15 @@ function content_type_course_field_default_field_instances() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Application Period');
+  t('Course Group');
   t('Course available for search');
   t('Course date');
   t('Course form');
   t('Course periods');
   t('Course registration');
   t('Course template');
-  t('Gymnasie program');
-  t('Orientation');
+  t('Period type');
   t('School');
-  t('Subject areas');
 
   return $field_instances;
 }

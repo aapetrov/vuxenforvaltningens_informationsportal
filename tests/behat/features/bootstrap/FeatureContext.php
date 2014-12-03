@@ -374,4 +374,45 @@ class FeatureContext extends DrupalContext {
     );
   }
 
+  /**
+   * Check the order of values in given selector.
+   *
+   * @Then /^"([^"]*)" should precede "([^"]*)" for the query "([^"]*)"$/
+   */
+  public function shouldPrecedeForTheQuery($textBefore, $textAfter, $cssQuery) {
+    $items = array_map(
+      function ($element) {
+        return trim($element->getText());
+      },
+      $this->getSession()->getPage()->findAll('css', $cssQuery)
+    );
+    if (array_search($textBefore, $items) < array_search($textAfter, $items)) {
+      throw new \Exception(sprintf("%s does not proceed %s", $textBefore, $textAfter));
+    }
+  }
+
+  /**
+   * Trigger keydown event for elementm because selenium when fill not trigger.
+   *
+   * @Given /^I trigger autocomplete with id "([^"]*)"$/
+   */
+  public function iTriggerAutocompleteWithId($id) {
+    $this->getSession()->getDriver()->evaluateScript(
+      'jQuery("#' . $id . '").trigger("keydown");'
+    );
+  }
+
+  /**
+   * @When /^I hover over the element "([^"]*)"$/
+   */
+  public function iHoverOverTheElement($selector) {
+    $session = $this->getSession();
+    $element = $session->getPage()->find('css', $selector);
+
+    if (NULL === $element) {
+      throw new \Exception(sprintf('Could not evaluate CSS selector: "%s"', $selector));
+    }
+
+    $element->mouseOver();
+  }
 }

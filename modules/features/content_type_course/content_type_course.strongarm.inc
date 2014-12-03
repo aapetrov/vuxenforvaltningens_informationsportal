@@ -13,6 +13,27 @@ function content_type_course_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'ant_course';
+  $strongarm->value = '1';
+  $export['ant_course'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ant_pattern_course';
+  $strongarm->value = '[node:field-course-template:title]';
+  $export['ant_pattern_course'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ant_php_course';
+  $strongarm->value = 0;
+  $export['ant_php_course'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'comment_anonymous_course';
   $strongarm->value = 0;
   $export['comment_anonymous_course'] = $strongarm;
@@ -123,7 +144,7 @@ function content_type_course_strongarm() {
       'display' => array(
         'node:course_template:title' => array(
           'default' => array(
-            'weight' => '6',
+            'weight' => '8',
             'visible' => FALSE,
           ),
           'search_result' => array(
@@ -133,7 +154,7 @@ function content_type_course_strongarm() {
         ),
         'node:course_template:log' => array(
           'default' => array(
-            'weight' => '5',
+            'weight' => '7',
             'visible' => FALSE,
           ),
           'search_result' => array(
