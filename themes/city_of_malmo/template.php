@@ -52,137 +52,6 @@ function city_of_malmo_facetapi_link_active($variables) {
 }
 
 /**
- * Overrides theme_form_element().
- */
-function city_of_malmo_form_element(&$variables) {
-  $element = &$variables['element'];
-  $is_checkbox = FALSE;
-  $is_radio = FALSE;
-
-  // This function is invoked as theme wrapper, but the rendered form element
-  // may not necessarily have been processed by form_builder().
-  $element += array(
-    '#title_display' => 'before',
-  );
-
-  // Add element #id for #type 'item'.
-  if (isset($element['#markup']) && !empty($element['#id'])) {
-    $attributes['id'] = $element['#id'];
-  }
-
-  // Check for errors and set correct error class.
-  if (isset($element['#parents']) && form_get_error($element)) {
-    $attributes['class'][] = 'error';
-  }
-
-  if (!empty($element['#type'])) {
-    $attributes['class'][] = 'form-type-' . strtr($element['#type'], '_', '-');
-  }
-  if (!empty($element['#name'])) {
-    $attributes['class'][] = 'form-item-' . strtr($element['#name'], array(
-        ' ' => '-',
-        '_' => '-',
-        '[' => '-',
-        ']' => '',
-      ));
-  }
-  // Add a class for disabled elements to facilitate cross-browser styling.
-  if (!empty($element['#attributes']['disabled'])) {
-    $attributes['class'][] = 'form-disabled';
-  }
-  if (!empty($element['#autocomplete_path']) && drupal_valid_path($element['#autocomplete_path'])) {
-    $attributes['class'][] = 'form-autocomplete';
-  }
-  $attributes['class'][] = 'form-item';
-
-  // See http://getbootstrap.com/css/#forms-controls.
-  if (isset($element['#type'])) {
-    if ($element['#type'] == "radio") {
-      $attributes['class'][] = 'radio';
-      $is_radio = TRUE;
-    }
-    elseif ($element['#type'] == "checkbox") {
-      $attributes['class'][] = 'checkbox';
-      $is_checkbox = TRUE;
-    }
-    else {
-      $attributes['class'][] = 'form-group';
-    }
-  }
-
-  $description = FALSE;
-  $tooltip = FALSE;
-  // Convert some descriptions to tooltips.
-  // @see bootstrap_tooltip_descriptions setting in _bootstrap_settings_form()
-  if (!empty($element['#description'])) {
-    $description = $element['#description'];
-    // Change max length of description to 300
-    // to make all of current descriptions processed by tooltip.
-    if (theme_get_setting('bootstrap_tooltip_enabled') && theme_get_setting('bootstrap_tooltip_descriptions') && $description === strip_tags($description) && strlen($description) <= 300) {
-      $tooltip = TRUE;
-      $attributes['data-toggle'] = 'tooltip';
-      $attributes['title'] = $description;
-    }
-  }
-
-  $output = '<div' . drupal_attributes($attributes) . '>' . "\n";
-
-  // If #title is not set, we don't display any label or required marker.
-  if (!isset($element['#title'])) {
-    $element['#title_display'] = 'none';
-  }
-
-  $prefix = '';
-  $suffix = '';
-  if (isset($element['#field_prefix']) || isset($element['#field_suffix'])) {
-    // Determine if "#input_group" was specified.
-    if (!empty($element['#input_group'])) {
-      $prefix .= '<div class="input-group">';
-      $prefix .= isset($element['#field_prefix']) ? '<span class="input-group-addon">' . $element['#field_prefix'] . '</span>' : '';
-      $suffix .= isset($element['#field_suffix']) ? '<span class="input-group-addon">' . $element['#field_suffix'] . '</span>' : '';
-      $suffix .= '</div>';
-    }
-    else {
-      $prefix .= isset($element['#field_prefix']) ? $element['#field_prefix'] : '';
-      $suffix .= isset($element['#field_suffix']) ? $element['#field_suffix'] : '';
-    }
-  }
-
-  switch ($element['#title_display']) {
-    case 'before':
-    case 'invisible':
-      $output .= ' ' . theme('form_element_label', $variables);
-      $output .= ' ' . $prefix . $element['#children'] . $suffix . "\n";
-      break;
-
-    case 'after':
-      if ($is_radio || $is_checkbox) {
-        $output .= ' ' . $prefix . $element['#children'] . $suffix;
-      }
-      else {
-        $variables['#children'] = ' ' . $prefix . $element['#children'] . $suffix;
-      }
-      $output .= ' ' . theme('form_element_label', $variables) . "\n";
-      break;
-
-    case 'none':
-    case 'attribute':
-      // Output no label and no required marker, only the children.
-      $output .= ' ' . $prefix . $element['#children'] . $suffix . "\n";
-      break;
-  }
-
-  if ($description && !$tooltip) {
-    $output .= '<p class="help-block">' . $element['#description'] . "</p>\n";
-  }
-
-  $output .= "</div>\n";
-
-  return $output;
-}
-
-
-/**
  * Theme a list of sort options.
  *
  * @see theme_search_api_sorts_list()
@@ -448,6 +317,12 @@ function timefield_weekly_summary_days_summarized_alter($format) {
  * @see bootstrap_pager()
  */
 function city_of_malmo_pager($variables) {
+  $variables['tags'] = array(
+    'Föregående',
+    'Föregående',
+    'Nästa',
+    'Nästa',
+  );
   $output = "";
   $items = array();
   $tags = $variables['tags'];
@@ -625,15 +500,16 @@ function city_of_malmo_status_messages($variables) {
 function city_of_malmo_breadcrumb($variables) {
   $output = '';
   $breadcrumb = $variables['breadcrumb'];
-  array_unshift($breadcrumb, l(t('Information portal'), '<front>'));
+  array_unshift($breadcrumb, l(t('Vuxenutbildning Malmö'), '<front>'));
   array_unshift($breadcrumb, l(t('Home'), 'http://www.malmo.se/'));
-
-  $item = menu_get_item();
-  $breadcrumb[] = array(
-    // If we are on a non-default tab, use the tab's title.
-    'data' => !empty($item['tab_parent']) ? check_plain($item['title']) : drupal_get_title(),
-    'class' => array('active'),
-  );
+  if (!drupal_is_front_page()) {
+    $item = menu_get_item();
+    $breadcrumb[] = array(
+      // If we are on a non-default tab, use the tab's title.
+      'data' => !empty($item['tab_parent']) ? check_plain($item['title']) : drupal_get_title(),
+      'class' => array('active'),
+    );
+  }
 
   // Determine if we are to display the breadcrumb.
   $bootstrap_breadcrumb = theme_get_setting('bootstrap_breadcrumb');
@@ -647,4 +523,21 @@ function city_of_malmo_breadcrumb($variables) {
     ));
   }
   return $output;
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function city_of_malmo_preprocess_field(&$variables) {
+  $field_name_class = str_replace('field_course_', '', $variables['element']['#field_name']);
+  $field_name_class = str_replace('_', '-', $field_name_class);
+  $variables['label_display'] = $variables['element']['#label_display'];
+  $variables['classes_array'] = array($field_name_class);
+}
+
+/**
+ * Derivative of theme_table() solely for the HOOK_preprocess_table__PATTERN().
+ */
+function city_of_malmo_table__field_collection_table($variables) {
+  return '<div class="view-my-courses-search-list">' . theme_table($variables) . '</div>';
 }

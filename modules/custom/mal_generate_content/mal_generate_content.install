@@ -20,13 +20,18 @@ function mal_generate_content_enable() {
     )
   );
 
-  mal_generate_content_add_taxonomy_terms('course_form',
+  $course_form_terms = mal_generate_content_add_taxonomy_terms('course_form',
     array(
       'Klassrumsundervisning',
       'Distanskurs',
       'Flexkurs',
     )
   );
+
+  $flex_course_form_term = $course_form_terms[2];
+
+  $classroom_term = reset($course_form_terms);
+  variable_set('course_package_form_terms', array($classroom_term->tid => $classroom_term->tid));
 
   mal_generate_content_add_taxonomy_terms('course_school',
     array(
@@ -62,6 +67,30 @@ function mal_generate_content_enable() {
     )
   );
 
+  mal_generate_content_add_taxonomy_terms('qa_category',
+    array(
+      'Vad är Komvux?',
+      'Vad behöver jag tänka på?',
+      'Hur gör jag min ansökan?',
+      'Har jag fått en plats?',
+      'Efter mina studier?',
+    )
+  );
+
+  $terms = mal_generate_content_add_taxonomy_terms('course_searchable_type',
+    array(
+      'Searchable now',
+      'Regular application period ended',
+      'Do not searchable right now',
+      'The course has a registered application period but it hasn\'t started yet',
+      'Inactive',
+    )
+  );
+
+  foreach ($terms as $key => $term) {
+    variable_set('mal_generate_content_searchable_type_' . $key, $term->tid);
+  }
+
   global $user;
 
   $school = new stdClass();
@@ -92,11 +121,6 @@ function mal_generate_content_enable() {
     'format' => 'plain_text',
   );
 
-  $school->field_school_locality[$school->language][] = array(
-    'value' => 'Malmo test',
-    'format' => 'plain_text',
-  );
-
   $school->field_school_maps_link[$school->language][] = array(
     'value' => 'Test link',
     'format' => 'plain_text',
@@ -104,11 +128,6 @@ function mal_generate_content_enable() {
 
   $school->field_school_phone[$school->language][] = array(
     'value' => '380932312332',
-    'format' => 'plain_text',
-  );
-
-  $school->field_school_post_office[$school->language][] = array(
-    'value' => 'Test post C3',
     'format' => 'plain_text',
   );
 
@@ -124,6 +143,28 @@ function mal_generate_content_enable() {
 
   $school = node_submit($school);
   node_save($school);
+
+  $education = new stdClass();
+  $education->title = 'Grundläggande vuxenutbildning';
+  $education->type = 'education';
+  node_object_prepare($education);
+  $education->language = LANGUAGE_NONE;
+  $education->uid = $user->uid;
+  $education->status = 1;
+  $education = node_submit($education);
+  node_save($education);
+
+  $education = new stdClass();
+  $education->title = 'Gymnasial vuxenutbildning';
+  $education->type = 'education';
+  node_object_prepare($education);
+  $education->language = LANGUAGE_NONE;
+  $education->uid = $user->uid;
+  $education->status = 1;
+  $education = node_submit($education);
+  node_save($education);
+
+  variable_set('course_package_gymnasium_program', $education->nid);
 
   $template = new stdClass();
   $template->title = "A1 Test course template";
@@ -151,12 +192,15 @@ function mal_generate_content_enable() {
   );
 
   $template->field_course_gymnasie_program[$template->language][] = array(
-    'tid' => $gymnasie_program->tid,
+    'target_id' => $gymnasie_program->tid,
+  );
+
+  $template->field_course_type_education[$template->language][] = array(
+    'target_id' => $education->nid,
   );
 
   $template = node_submit($template);
   node_save($template);
-  watchdog('generate', json_encode($template));
 
   $node = new stdClass();
   $node->title = "Test course";
@@ -170,6 +214,17 @@ function mal_generate_content_enable() {
   $node->field_course_date[$node->language][] = array(
     'value' => '1362524400',
     'value2' => '1396562400',
+  );
+
+  $form = taxonomy_get_term_by_name('Klassrumsundervisning');
+  $form = reset($form);
+
+  $node->field_course_form[$node->language][] = array(
+    'tid' => $form->tid,
+  );
+
+  $node->field_course_searchable_type[$template->language][] = array(
+    'tid' => variable_get('mal_generate_content_searchable_type_3', 73),
   );
 
   $node->field_course_school[$node->language][] = array(
@@ -199,6 +254,264 @@ function mal_generate_content_enable() {
 
   $node = node_submit($node);
   node_save($node);
+
+  $node = new stdClass();
+  $node->title = "Test course 2";
+  $node->type = "course";
+  $node->language = LANGUAGE_NONE;
+  node_object_prepare($node);
+
+  $node->uid = $user->uid;
+  $node->status = 1;
+
+  $node->field_course_date[$node->language][] = array(
+    'value' => strtotime('+60 day'),
+    'value2' => strtotime('+61 day'),
+  );
+
+  $node->field_course_application_period[$node->language][] = array(
+    'value' => strtotime('+30 day'),
+    'value2' => strtotime('+31 day'),
+  );
+
+  $node->field_course_template[$node->language][] = array(
+    'target_id' => $template->nid,
+  );
+
+  $node = node_submit($node);
+  node_save($node);
+
+  // Node for course tables and sidebar test case.
+  $template = new stdClass();
+  $template->title = "Test course 3";
+  $template->type = "course_template";
+  node_object_prepare($template);
+  $template->language = LANGUAGE_NONE;
+  $template->uid = $user->uid;
+  $template->status = 1;
+
+  $orientation = taxonomy_get_term_by_name('Fordon');
+  $orientation = reset($orientation);
+
+  $subject_areas = taxonomy_get_term_by_name('Naturvetenskap');
+  $subject_areas = reset($subject_areas);
+
+  $gymnasie_program = taxonomy_get_term_by_name('Samhälle');
+  $gymnasie_program = reset($gymnasie_program);
+
+  $template->field_course_orientation[$template->language][] = array(
+    'tid' => $orientation->tid,
+  );
+
+  $template->field_course_subject_areas[$template->language][] = array(
+    'tid' => $subject_areas->tid,
+  );
+
+  $template->field_course_gymnasie_program[$template->language][] = array(
+    'target_id' => $gymnasie_program->tid,
+  );
+
+  $template = node_submit($template);
+  node_save($template);
+
+  $node = new stdClass();
+  $node->title = "Test course 3";
+  $node->type = "course";
+  $node->language = LANGUAGE_NONE;
+  node_object_prepare($node);
+
+  $node->uid = $user->uid;
+  $node->status = 1;
+
+  $node->field_course_date[$node->language][] = array(
+    'value' => strtotime('-1 day'),
+    'value2' => strtotime('+1 day'),
+  );
+
+  $node->field_course_searchable_type[$template->language][] = array(
+    'tid' => variable_get('mal_generate_content_searchable_type_0', 74),
+  );
+
+  $node->field_course_school[$node->language][] = array(
+    'target_id' => $school->nid,
+  );
+
+  $node->field_course_template[$node->language][] = array(
+    'target_id' => $template->nid,
+  );
+
+  $node->field_course_application_period[$node->language][] = array(
+    'value' => strtotime('-1 day'),
+    'value2' => strtotime('+1 day'),
+  );
+
+  $node->field_course_periods[$node->language][] = array(
+    'value' => '300',
+    'value2' => '44100',
+    'tue' => 1,
+    'mon' => 1,
+    'wed' => 0,
+    'thu' => 0,
+    'fri' => 0,
+    'sat' => 0,
+    'sun' => 0,
+  );
+
+  $node = node_submit($node);
+  node_save($node);
+
+  // Continuous course and template for it.///////////////////////////////////
+  $template = new stdClass();
+  $template->title = "Test course 4";
+  $template->type = "course_template";
+  node_object_prepare($template);
+  $template->language = LANGUAGE_NONE;
+  $template->uid = $user->uid;
+  $template->status = 1;
+
+  $orientation = taxonomy_get_term_by_name('Fordon');
+  $orientation = reset($orientation);
+
+  $subject_areas = taxonomy_get_term_by_name('Naturvetenskap');
+  $subject_areas = reset($subject_areas);
+
+  $gymnasie_program = taxonomy_get_term_by_name('Samhälle');
+  $gymnasie_program = reset($gymnasie_program);
+
+  $template->field_course_orientation[$template->language][] = array(
+    'tid' => $orientation->tid,
+  );
+
+  $template->field_course_subject_areas[$template->language][] = array(
+    'tid' => $subject_areas->tid,
+  );
+
+  $template->field_course_gymnasie_program[$template->language][] = array(
+    'target_id' => $gymnasie_program->tid,
+  );
+
+  $template = node_submit($template);
+  node_save($template);
+
+  $node = new stdClass();
+  $node->title = "Test course 4";
+  $node->type = "course";
+  $node->language = LANGUAGE_NONE;
+  node_object_prepare($node);
+
+  $node->uid = $user->uid;
+  $node->status = 1;
+
+  $node->field_course_date[$node->language][] = array(
+    'value' => strtotime('-1 day'),
+  );
+
+  $node->field_course_searchable_type[$template->language][] = array(
+    'tid' => variable_get('mal_generate_content_searchable_type_0', 74),
+  );
+
+  $node->field_course_school[$node->language][] = array(
+    'target_id' => $school->nid,
+  );
+
+  $node->field_course_template[$node->language][] = array(
+    'target_id' => $template->nid,
+  );
+
+  $node->field_course_application_period[$node->language][] = array(
+    'value' => strtotime('-1 day'),
+  );
+
+  $node->field_course_form[$node->language][] = array(
+    'tid' => $flex_course_form_term->tid,
+  );
+
+  $node->field_course_periods[$node->language][] = array(
+    'value' => '300',
+    'value2' => '44100',
+    'tue' => 1,
+    'mon' => 1,
+    'wed' => 0,
+    'thu' => 0,
+    'fri' => 0,
+    'sat' => 0,
+    'sun' => 0,
+  );
+
+  $node = node_submit($node);
+  node_save($node);
+  // ///////////////////////////////////////////////////////////////////////////
+
+  $node = new stdClass();
+  $node->title = "Test qa 3";
+  $node->type = "question_and_answer";
+  $node->language = LANGUAGE_NONE;
+  node_object_prepare($node);
+
+  $category = taxonomy_get_term_by_name('Vad är Komvux?');
+  $category = reset($category);
+
+  $node->field_qa_category[$node->language][] = array(
+    'tid' => $category->tid,
+  );
+
+  $node->field_course_searchable_type[$template->language][] = array(
+    'tid' => variable_get('mal_generate_content_searchable_type_3', 74),
+  );
+
+  $node = node_submit($node);
+  node_save($node);
+
+  // Course package.
+  $node = new stdClass();
+  $node->title = "Test course package";
+  $node->type = "course_packages";
+  $node->language = LANGUAGE_NONE;
+  node_object_prepare($node);
+
+  $node->uid = $user->uid;
+  $node->status = 1;
+
+  $node->field_course_weeks_of_study[$node->language][] = array(
+    'value' => '10',
+  );
+
+  $node->body[$node->language][] = array(
+    'value' => 'Test text',
+    'summary' => NULL,
+    'format' => 'full_html',
+    'safe_value' => 'Test text',
+    'safe_summary' => '',
+  );
+
+  $node->field_course_date[$node->language][] = array(
+    'value' => strtotime('-1 day'),
+    'value2' => strtotime('+1 day'),
+  );
+
+  $node->field_course_application_period[$node->language][] = array(
+    'value' => strtotime('-1 day'),
+    'value2' => strtotime('+1 day'),
+  );
+
+  $node->field_course_searchable_type[$node->language][] = array(
+    'tid' => variable_get('mal_generate_content_searchable_type_0', 74),
+  );
+
+  $node->field_course_school[$node->language][] = array(
+    'target_id' => $school->nid,
+  );
+
+  $node->field_course_form[$node->language][] = array(
+    'tid' => $form->tid,
+  );
+
+  $node->field_course_scope[$node->language][] = array(
+    'value' => 90,
+  );
+
+  $node = node_submit($node);
+  node_save($node);
 }
 
 /**
@@ -208,8 +521,12 @@ function mal_generate_content_enable() {
  *   Vocabulary machine name.
  * @param array $terms
  *   Term names.
+ *
+ * @return array
+ *   Array of created terms.
  */
 function mal_generate_content_add_taxonomy_terms($voc_name, $terms) {
+  $return = array();
   $vocabulary = taxonomy_vocabulary_machine_name_load($voc_name);
 
   if (!$vocabulary) {
@@ -222,17 +539,16 @@ function mal_generate_content_add_taxonomy_terms($voc_name, $terms) {
     $vocabulary = taxonomy_vocabulary_machine_name_load($voc_name);
   }
 
-  $options_source = taxonomy_get_tree($vocabulary->vid);
-  $options = array();
-  foreach ($options_source as $item) {
-    $value = $item->name;
-    $options[] = $value;
+  foreach (taxonomy_get_tree($vocabulary->vid) as $term) {
+    taxonomy_term_delete($term->tid);
   }
 
-  foreach (array_diff($terms, $options) as $name) {
+  foreach ($terms as $name) {
     $term = new stdClass();
     $term->name = $name;
     $term->vid = $vocabulary->vid;
     taxonomy_term_save($term);
+    $return[] = $term;
   }
+  return $return;
 }

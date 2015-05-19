@@ -1,0 +1,68 @@
+<?php
+
+/**
+ * @file
+ * Contains mal_ux_improvements.module
+ */
+
+/**
+ * Implements hook_views_api().
+ */
+function mal_ux_improvements_views_api() {
+  return array('api' => 3.0);
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function mal_ux_improvements_views_query_alter(&$view, &$query) {
+  global $user;
+  if (($view->name == 'admin_views_node')
+        && (in_array('School editor', $user->roles))) {
+    $group_id = $query->set_where_group();
+    $query->add_where($group_id,
+      db_and()
+         ->condition('node.uid', $user->uid)
+     );
+  }
+}
+
+/**
+ * Implements hook_form_FORM_TYPE_alter().
+ */
+function mal_ux_improvements_form_node_form_alter(&$form, &$form_state) {
+  $form['#attached']['css'][] = drupal_get_path('module', 'mal_ux_improvements') . '/mal_ux_improvements.css';
+  $form['options']['#access'] = FALSE;
+}
+
+/**
+ * Implements hook_navbar().
+ */
+function mal_ux_improvements_navbar() {
+  $items = array();
+  $items['mal_help_link'] = array(
+    '#type' => 'navbar_item',
+    'tab' => array(
+      '#type' => 'link',
+      '#title' => t('Help'),
+
+      '#href' => variable_get('mal_help_link', 'http://drupal.org'),
+      '#options' => array(
+        'attributes' => array('target' => '_blank'),
+      ),
+    ),
+    '#weight' => 100,
+    '#wrapper_attributes' => array(
+      'class' => array('pull-right'),
+    ),
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_update_projects_alter().
+ */
+function mal_ux_improvements_update_projects_alter(&$projects) {
+  $projects['panels']['info']['version'] = '7.x-3.x-dev';
+}

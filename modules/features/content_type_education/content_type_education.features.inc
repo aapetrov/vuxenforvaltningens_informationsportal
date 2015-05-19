@@ -19,9 +19,9 @@ function content_type_education_ctools_plugin_api($module = NULL, $api = NULL) {
 function content_type_education_node_info() {
   $items = array(
     'education' => array(
-      'name' => t('Education'),
+      'name' => t('Utbildning'),
       'base' => 'node_content',
-      'description' => '',
+      'description' => t('Använd <em> utbildning </ em> för administrera utbildningsformer.'),
       'has_title' => '1',
       'title_label' => t('Title'),
       'help' => '',

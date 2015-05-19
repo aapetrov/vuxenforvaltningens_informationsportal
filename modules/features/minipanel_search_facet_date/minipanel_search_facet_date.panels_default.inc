@@ -53,7 +53,7 @@ function minipanel_search_facet_date_default_panels_mini() {
     $pane->configuration = array(
       'admin_title' => '',
       'title' => '',
-      'body' => '<p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Nulla porttitor accumsan tincidunt. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Pellentesque in ipsum id orci porta dapibus. Sed porttitor lectus nibh.</p>',
+      'body' => '<p>Gör dina val till höger. Klicka på de alternativ du är intresserad av.</p>',
       'format' => 'filtered_html',
       'substitute' => TRUE,
     );
@@ -110,15 +110,16 @@ function minipanel_search_facet_date_default_panels_mini() {
     $display->content['new-5b42c05f-ccd6-4980-8a44-d58c798aacb4'] = $pane;
     $display->panels['region-two'][1] = 'new-5b42c05f-ccd6-4980-8a44-d58c798aacb4';
     $pane = new stdClass();
-    $pane->pid = 'new-50f73ab1-e12b-471d-ab2b-f8b6df54d085';
+    $pane->pid = 'new-15ab3818-a949-4ff8-8f5f-ed46307644e1';
     $pane->panel = 'region-two';
     $pane->type = 'block';
-    $pane->subtype = 'facetapi-IzLNVu1tfeubo0udCM0Kf39FX5D617g8';
+    $pane->subtype = 'facetapi-511W1ObRGr1TC075gFYlodxtci14g8Bg';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
       'override_title' => 0,
       'override_title_text' => '',
+      'override_title_heading' => 'h2',
     );
     $pane->cache = array();
     $pane->style = array(
@@ -128,9 +129,32 @@ function minipanel_search_facet_date_default_panels_mini() {
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $pane->uuid = '50f73ab1-e12b-471d-ab2b-f8b6df54d085';
-    $display->content['new-50f73ab1-e12b-471d-ab2b-f8b6df54d085'] = $pane;
-    $display->panels['region-two'][2] = 'new-50f73ab1-e12b-471d-ab2b-f8b6df54d085';
+    $pane->uuid = '15ab3818-a949-4ff8-8f5f-ed46307644e1';
+    $display->content['new-15ab3818-a949-4ff8-8f5f-ed46307644e1'] = $pane;
+    $display->panels['region-two'][2] = 'new-15ab3818-a949-4ff8-8f5f-ed46307644e1';
+    $pane = new stdClass();
+    $pane->pid = 'new-229431f7-7dc7-44b0-821b-bc1d27a5a5b3';
+    $pane->panel = 'region-two';
+    $pane->type = 'block';
+    $pane->subtype = 'facetapi-x9T0fETY9Q18n0nmWbDmMj5BK46z0qCw';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Tider',
+      'override_title_heading' => 'h2',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 3;
+    $pane->locks = array();
+    $pane->uuid = '229431f7-7dc7-44b0-821b-bc1d27a5a5b3';
+    $display->content['new-229431f7-7dc7-44b0-821b-bc1d27a5a5b3'] = $pane;
+    $display->panels['region-two'][3] = 'new-229431f7-7dc7-44b0-821b-bc1d27a5a5b3';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $mini->display = $display;

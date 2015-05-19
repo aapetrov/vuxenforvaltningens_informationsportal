@@ -26,9 +26,10 @@ function content_type_course_packages_field_group_info() {
       0 => 'field_course_date',
       1 => 'field_course_prerequisites',
       2 => 'field_course_school',
-      3 => 'field_course_weeks_of_study',
-      4 => 'field_course_scope',
-      5 => 'node:course_template:field_course_type_education',
+      3 => 'field_course_scope',
+      4 => 'field_course_weeks_of_study',
+      5 => 'field_course_searchable_type',
+      6 => 'field_course_form',
     ),
     'format_type' => 'html-element',
     'format_settings' => array(
@@ -60,9 +61,10 @@ function content_type_course_packages_field_group_info() {
       0 => 'field_course_date',
       1 => 'field_course_prerequisites',
       2 => 'field_course_school',
-      3 => 'field_course_weeks_of_study',
-      4 => 'field_course_scope',
-      5 => 'node:course_template:field_course_type_education',
+      3 => 'field_course_scope',
+      4 => 'field_course_weeks_of_study',
+      5 => 'field_course_searchable_type',
+      6 => 'field_course_form',
     ),
     'format_type' => 'html-element',
     'format_settings' => array(
@@ -89,12 +91,15 @@ function content_type_course_packages_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Show description',
-    'weight' => '2',
+    'weight' => '1',
     'children' => array(
       0 => 'body',
-      1 => 'field_course_contact_person',
-      2 => 'field_course_information_meeting',
-      3 => 'field_course_package',
+      1 => 'field_course_application_period',
+      2 => 'field_course_contact_person',
+      3 => 'field_course_number_of_points',
+      4 => 'field_course_package',
+      5 => 'field_course_group',
+      6 => 'field_course_information_meeting',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -149,21 +154,12 @@ function content_type_course_packages_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Second group',
-    'weight' => '1',
-    'children' => array(
-      0 => 'field_course_application_period',
-      1 => 'field_course_number_of_points',
-    ),
-    'format_type' => 'html-element',
+    'weight' => '4',
+    'children' => array(),
+    'format_type' => 'hidden',
     'format_settings' => array(
-      'label' => 'Second group',
-      'instance_settings' => array(
-        'classes' => 'second-group',
-        'element' => 'div',
-        'show_label' => '0',
-        'label_element' => 'div',
-        'attributes' => '',
-      ),
+      'formatter' => '',
+      'instance_settings' => array(),
     ),
   );
   $export['group_second_group|node|course_packages|search_result'] = $field_group;
@@ -183,8 +179,9 @@ function content_type_course_packages_field_group_info() {
     'children' => array(
       0 => 'body',
       1 => 'field_course_contact_person',
-      2 => 'field_course_information_meeting',
-      3 => 'field_course_package',
+      2 => 'field_course_package',
+      3 => 'field_course_group',
+      4 => 'field_course_information_meeting',
     ),
     'format_type' => 'html-element',
     'format_settings' => array(

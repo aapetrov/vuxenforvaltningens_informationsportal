@@ -19,7 +19,7 @@ function config_search_sort_default_search_api_sort() {
     "default_sort" : "0",
     "default_sort_no_terms" : "0",
     "default_order" : "asc",
-    "options" : { "field_name" : "Course date \\u00bb Start date" },
+    "options" : { "field_name" : "Kursperiod \\u00bb Startdatum" },
     "rdf_mapping" : []
   }');
   $items['node__field_course_date:value2'] = entity_import('search_api_sort', '{
@@ -32,14 +32,14 @@ function config_search_sort_default_search_api_sort() {
     "default_sort" : "0",
     "default_sort_no_terms" : "0",
     "default_order" : "desc",
-    "options" : { "field_name" : "Course date \\u00bb End date" },
+    "options" : { "field_name" : "Kursperiod \\u00bb Slutdatum" },
     "rdf_mapping" : []
   }');
   $items['node__search_api_relevance'] = entity_import('search_api_sort', '{
     "index_id" : "node",
     "field" : "search_api_relevance",
     "name" : "Relevance",
-    "enabled" : "1",
+    "enabled" : "0",
     "weight" : "0",
     "identifier" : "node__search_api_relevance",
     "default_sort" : "1",
@@ -58,7 +58,7 @@ function config_search_sort_default_search_api_sort() {
     "default_sort" : "0",
     "default_sort_no_terms" : "0",
     "default_order" : "desc",
-    "options" : { "field_name" : "Title" },
+    "options" : { "field_name" : "Titel" },
     "rdf_mapping" : []
   }');
   return $items;

@@ -35,9 +35,18 @@ function mal_entityreference_widget_alter_form_field_ui_field_edit_form_alter(&$
  * Implements hook_field_widget_form_alter().
  */
 function mal_entityreference_widget_alter_field_widget_form_alter(&$element, &$form_state, $context) {
+  if ($context['field']['type'] == 'timefield') {
+    $element['days']['#type'] = 'select';
+    if (is_array($element['days']['#default_value'])) {
+      $defaults = array_filter($element['days']['#default_value']);
+      $element['days']['#default_value'] = reset($defaults);
+    }
+    array_unshift($element['#element_validate'], 'mal_entityreference_widget_alter_timefield_validate');
+  }
   if ($context['field']['type'] == 'entityreference') {
     if (!empty($context['instance']['render_entity_below'])) {
-      $element['#suffix'] = '<div id="mal-rendered-entity"></div>';
+      $element['#attributes']['class'][] = 'chosen-enable';
+      $element['#pre_render'][] = 'mal_entityreference_widget_alter_element_pre_render';
       $element['#ajax'] = array(
         'callback' => 'mal_entityreference_widget_alter_ajax_callback',
         'wrapper' => 'mal-rendered-entity',
@@ -46,19 +55,31 @@ function mal_entityreference_widget_alter_field_widget_form_alter(&$element, &$f
     }
     if (($element['#field_name'] == 'field_course_school') && ($form_state['build_info']['form_id'] != 'user_profile_form')) {
       // Only on node creation.
-      if (empty($element['#entity']->nid)) {
+      if (!user_access('change field_course_school field')) {
         global $user;
         $entity = user_load($user->uid);
-
-        if ((!empty($entity->field_course_school[LANGUAGE_NONE][0]['target_id']))
-          && ($school = node_load($entity->field_course_school[LANGUAGE_NONE][0]['target_id']))) {
-          $element['#default_value'] = $school->title . ' (' . $school->nid . ')';
+        $element['#options'] = array();
+        foreach ($entity->field_user_school[LANGUAGE_NONE] as $option) {
+          $node = node_load($option['target_id']);
+          $element['#options'][$option['target_id']] = $node->title;
         }
       }
+    }
+  }
+}
 
-      if (!user_access('change field_course_school field')) {
-        $element['#disabled'] = TRUE;
-      }
+/**
+ * Convert values to array.
+ */
+function mal_entityreference_widget_alter_timefield_validate($element, &$form_state, $form) {
+  $delta = $element['#delta'];
+  $field_name = $element['#field_name'];
+
+  if ($field_value = drupal_array_get_nested_value($form_state['values'], $element['#field_parents'])) {
+    $values = $field_value[$field_name][$element['#language']][$delta];
+    if (!is_array($values['days'])) {
+      $values['days'] = array($values['days'] => $values['days']);
+      form_set_value($element, $values, $form_state);
     }
   }
 }
@@ -71,5 +92,35 @@ function mal_entityreference_widget_alter_ajax_callback($form, $form_state) {
   $entity = entity_load($triggering_element['#entity_type'], array(
     $form_state['values'][$triggering_element['#field_name']][$triggering_element['#language']][0]['target_id'],
   ));
-  return '<div id="mal-rendered-entity">' . render(entity_view($triggering_element['#entity_type'], $entity, 'full')) . '</div>';
+  $entity_view = entity_view($triggering_element['#entity_type'], $entity, 'full');
+  return '<div id="mal-rendered-entity">' . render($entity_view) . '</div>';
+}
+
+/**
+ * Entity reference select widget pre render callback.
+ */
+function mal_entityreference_widget_alter_element_pre_render($element) {
+  $default_rendered = '';
+
+  $field_info = field_info_field($element['#field_name']);
+
+  $val = FALSE;
+
+  if (!empty($element['#default_value'])) {
+    $val = $element['#default_value'];
+  }
+  if (!empty($element['#value']) && !drupal_static('entityreference_preview_use_default', FALSE)) {
+    $val = $element['#value'];
+  }
+
+  if (!empty($element['#default_value'])) {
+    $default = is_array($val) ? $val : array($val);
+    $entity = entity_load($field_info['settings']['target_type'], $default);
+    $entity_view = entity_view($field_info['settings']['target_type'], $entity, 'full');
+    $default_rendered = render($entity_view);
+  }
+
+  $element['#suffix'] = '<div id="mal-rendered-entity">' . $default_rendered . '</div>';
+
+  return $element;
 }

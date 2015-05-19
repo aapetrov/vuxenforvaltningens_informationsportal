@@ -134,6 +134,9 @@ function content_type_course_strongarm() {
       'node_node_search_result' => array(
         'custom_settings' => FALSE,
       ),
+      'token' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -144,72 +147,72 @@ function content_type_course_strongarm() {
       'display' => array(
         'node:course_template:title' => array(
           'default' => array(
-            'weight' => '8',
+            'weight' => '9',
             'visible' => FALSE,
           ),
           'search_result' => array(
-            'weight' => '4',
+            'weight' => '6',
             'visible' => FALSE,
           ),
         ),
         'node:course_template:log' => array(
           'default' => array(
-            'weight' => '7',
+            'weight' => '8',
             'visible' => FALSE,
           ),
           'search_result' => array(
-            'weight' => '5',
+            'weight' => '7',
             'visible' => FALSE,
           ),
         ),
         'node:course_template:field_course_type_education' => array(
           'default' => array(
-            'weight' => '-3',
+            'weight' => '6',
             'visible' => TRUE,
           ),
           'search_result' => array(
-            'weight' => '-3',
+            'weight' => '5',
             'visible' => TRUE,
           ),
         ),
         'node:course_template:field_course_number_of_points' => array(
           'default' => array(
-            'weight' => '-2',
+            'weight' => '7',
             'visible' => TRUE,
           ),
           'search_result' => array(
-            'weight' => '-2',
+            'weight' => '6',
             'visible' => TRUE,
           ),
         ),
         'node:course_template:field_course_prerequisites' => array(
           'default' => array(
-            'weight' => '-1',
+            'weight' => '8',
             'visible' => TRUE,
           ),
           'search_result' => array(
-            'weight' => '-1',
+            'weight' => '7',
             'visible' => TRUE,
           ),
         ),
         'node:course_template:body' => array(
-          'default' => array(
-            'weight' => '6',
-            'visible' => TRUE,
-          ),
-          'search_result' => array(
-            'weight' => '3',
-            'visible' => TRUE,
-          ),
-        ),
-        'node:course_template:field_course_national_code' => array(
           'default' => array(
             'weight' => '12',
             'visible' => TRUE,
           ),
           'search_result' => array(
             'weight' => '7',
-            'visible' => FALSE,
+            'visible' => TRUE,
+          ),
+        ),
+        'node:course_template:field_course_national_code' => array(
+          'default' => array(
+            'weight' => '13',
+            'visible' => TRUE,
+          ),
+          'search_result' => array(
+            'weight' => '8',
+            'visible' => TRUE,
           ),
         ),
         'node:course_template:field_course_group' => array(
@@ -219,6 +222,36 @@ function content_type_course_strongarm() {
           ),
           'search_result' => array(
             'weight' => '8',
+            'visible' => FALSE,
+          ),
+        ),
+        'node:course_template:field_course_gymnasie_program' => array(
+          'default' => array(
+            'weight' => '11',
+            'visible' => FALSE,
+          ),
+          'search_result' => array(
+            'weight' => '10',
+            'visible' => FALSE,
+          ),
+        ),
+        'node:course_template:field_course_orientation' => array(
+          'default' => array(
+            'weight' => '9',
+            'visible' => FALSE,
+          ),
+          'search_result' => array(
+            'weight' => '9',
+            'visible' => FALSE,
+          ),
+        ),
+        'node:course_template:field_course_subject_areas' => array(
+          'default' => array(
+            'weight' => '10',
+            'visible' => FALSE,
+          ),
+          'search_result' => array(
+            'weight' => '9',
             'visible' => FALSE,
           ),
         ),
@@ -257,6 +290,7 @@ function content_type_course_strongarm() {
   $strongarm->value = array(
     0 => 'status',
     1 => 'promote',
+    2 => 'revision',
   );
   $export['node_options_course'] = $strongarm;
 
@@ -279,11 +313,11 @@ function content_type_course_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'timefield_weekly_summary_days';
   $strongarm->value = array(
-    'mon' => 'Monday',
-    'tue' => 'Tuesday',
-    'wed' => 'Wednesday',
-    'thu' => 'Thursday',
-    'fri' => 'Friday',
+    'mon' => 'Mandag',
+    'tue' => 'Tisdag',
+    'wed' => 'Onsdag',
+    'thu' => 'Torsdag',
+    'fri' => 'Fredag',
   );
   $export['timefield_weekly_summary_days'] = $strongarm;
 

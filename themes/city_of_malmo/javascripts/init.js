@@ -15,6 +15,14 @@
       $('.nav-logo').children('a')
         .attr('href','/')
           .css('background','url("http://assets.malmo.se/external/v4/logo-x1.png") no-repeat');
+
+      var $flex_group = $('.facetapi-facet-field-course-formname', context);
+      var $time_group = $('.facetapi-facet-field-course-periodsvalue', context);
+      if ($time_group.length > 0 &&
+        $flex_group.find('li').length > 0) {
+        $flex_group.parent().hide();
+        $flex_group.find('li').detach().appendTo($time_group);
+      }
     }
   };
 
@@ -44,10 +52,27 @@
     attach: function(context, settings) {
       $('.view-search', context).find('.panel-heading').once().click(function() {
         $(this).siblings('.panel-body').toggle(300);
-        if ($.trim($(this).text()) === Drupal.t("Hide description")) {
-          $(this).text(Drupal.t("Show description"));
+        if ($.trim($(this).text()) === 'Dölj beskrivning') {
+          $(this).text('Visa beskrivning');
         } else {
-          $(this).text(Drupal.t("Hide description"));
+          $(this).text('Dölj beskrivning');
+        }
+      });
+    }
+  };
+
+  Drupal.behaviors.myPlaningTabs = {
+    attach: function(context, settings) {
+      var navigation = $('.tab-item'),
+          tableTabs = $('.table-tabs'),
+          secondTable = $('.tab-second');
+
+      secondTable.hide();
+
+      navigation.click(function() {
+        if (!$(this).hasClass('active')) {
+          navigation.toggleClass('active');
+          tableTabs.toggle();
         }
       });
     }

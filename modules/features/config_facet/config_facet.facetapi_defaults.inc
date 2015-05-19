@@ -78,12 +78,15 @@ function config_facet_facetapi_default_facet_settings() {
   $facet->facet = 'field_course_form';
   $facet->enabled = FALSE;
   $facet->settings = array(
-    'operator' => 'and',
+    'operator' => 'or',
     'hard_limit' => '50',
     'dependencies' => array(
       'bundle' => 'none',
       'bundle_selected' => array(),
       'roles' => array(),
+      'facets' => array(),
+      'force_deactivation' => TRUE,
+      'regex' => FALSE,
     ),
     'facet_mincount' => '1',
     'facet_missing' => '0',
@@ -91,11 +94,42 @@ function config_facet_facetapi_default_facet_settings() {
     'individual_parent' => '0',
     'query_type' => 'term',
     'limit_active_items' => 0,
-    'default_true' => TRUE,
+    'default_true' => '1',
     'facet_search_ids' => array(),
     'exclude' => 0,
   );
   $export['search_api@node::field_course_form'] = $facet;
+
+  $facet = new stdClass();
+  $facet->disabled = FALSE; /* Edit this to true to make a default facet disabled initially */
+  $facet->api_version = 1;
+  $facet->name = 'search_api@node::field_course_form:name';
+  $facet->searcher = 'search_api@node';
+  $facet->realm = '';
+  $facet->facet = 'field_course_form:name';
+  $facet->enabled = FALSE;
+  $facet->settings = array(
+    'operator' => 'or',
+    'hard_limit' => '50',
+    'dependencies' => array(
+      'facets' => array(),
+      'force_deactivation' => TRUE,
+      'regex' => FALSE,
+      'roles' => array(),
+      'bundle' => 'none',
+      'bundle_selected' => array(),
+    ),
+    'facet_mincount' => '1',
+    'facet_missing' => '0',
+    'flatten' => 0,
+    'individual_parent' => 0,
+    'query_type' => 'term',
+    'limit_active_items' => 0,
+    'default_true' => '1',
+    'facet_search_ids' => array(),
+    'exclude' => 0,
+  );
+  $export['search_api@node::field_course_form:name'] = $facet;
 
   $facet = new stdClass();
   $facet->disabled = FALSE; /* Edit this to true to make a default facet disabled initially */
@@ -138,6 +172,10 @@ function config_facet_facetapi_default_facet_settings() {
     'dependencies' => array(
       'bundle' => 'none',
       'bundle_selected' => array(),
+      'roles' => array(),
+      'facets' => array(),
+      'force_deactivation' => TRUE,
+      'regex' => FALSE,
     ),
     'facet_mincount' => '1',
     'facet_missing' => '0',
@@ -145,11 +183,39 @@ function config_facet_facetapi_default_facet_settings() {
     'individual_parent' => '0',
     'query_type' => 'term',
     'limit_active_items' => 0,
-    'default_true' => TRUE,
+    'default_true' => '1',
     'facet_search_ids' => array(),
     'exclude' => 0,
   );
   $export['search_api@node::field_course_orientation'] = $facet;
+
+  $facet = new stdClass();
+  $facet->disabled = FALSE; /* Edit this to true to make a default facet disabled initially */
+  $facet->api_version = 1;
+  $facet->name = 'search_api@node::field_course_periods:value';
+  $facet->searcher = 'search_api@node';
+  $facet->realm = '';
+  $facet->facet = 'field_course_periods:value';
+  $facet->enabled = FALSE;
+  $facet->settings = array(
+    'operator' => 'or',
+    'hard_limit' => '50',
+    'dependencies' => array(
+      'facets' => array(),
+      'force_deactivation' => TRUE,
+      'regex' => FALSE,
+    ),
+    'facet_mincount' => '1',
+    'facet_missing' => '0',
+    'flatten' => 0,
+    'individual_parent' => 0,
+    'query_type' => 'term',
+    'limit_active_items' => 0,
+    'default_true' => '1',
+    'facet_search_ids' => array(),
+    'exclude' => 0,
+  );
+  $export['search_api@node::field_course_periods:value'] = $facet;
 
   $facet = new stdClass();
   $facet->disabled = FALSE; /* Edit this to true to make a default facet disabled initially */
@@ -160,7 +226,7 @@ function config_facet_facetapi_default_facet_settings() {
   $facet->facet = 'field_course_periods:value_formatted';
   $facet->enabled = FALSE;
   $facet->settings = array(
-    'operator' => 'and',
+    'operator' => 'or',
     'hard_limit' => '50',
     'dependencies' => array(
       'facets' => array(),
@@ -191,7 +257,7 @@ function config_facet_facetapi_default_facet_settings() {
   $facet->facet = 'field_course_school';
   $facet->enabled = FALSE;
   $facet->settings = array(
-    'operator' => 'and',
+    'operator' => 'or',
     'hard_limit' => '50',
     'dependencies' => array(
       'bundle' => 'none',
@@ -207,7 +273,7 @@ function config_facet_facetapi_default_facet_settings() {
     'individual_parent' => '0',
     'query_type' => 'term',
     'limit_active_items' => 0,
-    'default_true' => TRUE,
+    'default_true' => '1',
     'facet_search_ids' => array(),
     'exclude' => 0,
   );
@@ -249,12 +315,15 @@ function config_facet_facetapi_default_facet_settings() {
   $facet->facet = 'field_course_template:field_course_gymnasie_program';
   $facet->enabled = FALSE;
   $facet->settings = array(
-    'operator' => 'and',
+    'operator' => 'or',
     'hard_limit' => '50',
     'dependencies' => array(
       'facets' => array(),
       'force_deactivation' => TRUE,
       'regex' => FALSE,
+      'roles' => array(),
+      'bundle' => 'none',
+      'bundle_selected' => array(),
     ),
     'facet_mincount' => '1',
     'facet_missing' => '0',
@@ -283,6 +352,9 @@ function config_facet_facetapi_default_facet_settings() {
       'facets' => array(),
       'force_deactivation' => TRUE,
       'regex' => FALSE,
+      'roles' => array(),
+      'bundle' => 'none',
+      'bundle_selected' => array(),
     ),
     'facet_mincount' => '1',
     'facet_missing' => '0',
@@ -305,12 +377,15 @@ function config_facet_facetapi_default_facet_settings() {
   $facet->facet = 'field_course_template:field_course_subject_areas';
   $facet->enabled = FALSE;
   $facet->settings = array(
-    'operator' => 'and',
+    'operator' => 'or',
     'hard_limit' => '50',
     'dependencies' => array(
       'facets' => array(),
       'force_deactivation' => TRUE,
       'regex' => FALSE,
+      'roles' => array(),
+      'bundle' => 'none',
+      'bundle_selected' => array(),
     ),
     'facet_mincount' => '1',
     'facet_missing' => '0',
@@ -333,12 +408,15 @@ function config_facet_facetapi_default_facet_settings() {
   $facet->facet = 'field_course_template:field_course_type_education';
   $facet->enabled = FALSE;
   $facet->settings = array(
-    'operator' => 'and',
+    'operator' => 'or',
     'hard_limit' => '50',
     'dependencies' => array(
       'facets' => array(),
       'force_deactivation' => TRUE,
       'regex' => FALSE,
+      'roles' => array(),
+      'bundle' => 'none',
+      'bundle_selected' => array(),
     ),
     'facet_mincount' => '1',
     'facet_missing' => '0',
@@ -386,6 +464,34 @@ function config_facet_facetapi_default_facet_settings() {
   $facet = new stdClass();
   $facet->disabled = FALSE; /* Edit this to true to make a default facet disabled initially */
   $facet->api_version = 1;
+  $facet->name = 'search_api@node::global_searchable';
+  $facet->searcher = 'search_api@node';
+  $facet->realm = '';
+  $facet->facet = 'global_searchable';
+  $facet->enabled = FALSE;
+  $facet->settings = array(
+    'operator' => 'and',
+    'hard_limit' => '50',
+    'dependencies' => array(
+      'facets' => array(),
+      'force_deactivation' => TRUE,
+      'regex' => FALSE,
+    ),
+    'facet_mincount' => '1',
+    'facet_missing' => '0',
+    'flatten' => 0,
+    'individual_parent' => 0,
+    'query_type' => 'term',
+    'limit_active_items' => 0,
+    'default_true' => '1',
+    'facet_search_ids' => array(),
+    'exclude' => 0,
+  );
+  $export['search_api@node::global_searchable'] = $facet;
+
+  $facet = new stdClass();
+  $facet->disabled = FALSE; /* Edit this to true to make a default facet disabled initially */
+  $facet->api_version = 1;
   $facet->name = 'search_api@node::global_type_of_education';
   $facet->searcher = 'search_api@node';
   $facet->realm = '';
@@ -410,6 +516,35 @@ function config_facet_facetapi_default_facet_settings() {
     'exclude' => 0,
   );
   $export['search_api@node::global_type_of_education'] = $facet;
+
+  $facet = new stdClass();
+  $facet->disabled = FALSE; /* Edit this to true to make a default facet disabled initially */
+  $facet->api_version = 1;
+  $facet->name = 'search_api@node::type';
+  $facet->searcher = 'search_api@node';
+  $facet->realm = '';
+  $facet->facet = 'type';
+  $facet->enabled = FALSE;
+  $facet->settings = array(
+    'operator' => 'or',
+    'hard_limit' => '50',
+    'dependencies' => array(
+      'facets' => array(),
+      'force_deactivation' => TRUE,
+      'regex' => FALSE,
+      'roles' => array(),
+    ),
+    'facet_mincount' => '1',
+    'facet_missing' => '0',
+    'flatten' => 0,
+    'individual_parent' => 0,
+    'query_type' => 'term',
+    'limit_active_items' => 0,
+    'default_true' => '1',
+    'facet_search_ids' => array(),
+    'exclude' => 0,
+  );
+  $export['search_api@node::type'] = $facet;
 
   $facet = new stdClass();
   $facet->disabled = FALSE; /* Edit this to true to make a default facet disabled initially */
@@ -541,7 +676,7 @@ function config_facet_facetapi_default_facet_settings() {
   $facet->searcher = 'search_api@node';
   $facet->realm = 'block';
   $facet->facet = 'field_course_available_search';
-  $facet->enabled = TRUE;
+  $facet->enabled = FALSE;
   $facet->settings = array(
     'weight' => 0,
     'widget' => 'facetapi_checkbox_links',
@@ -699,18 +834,24 @@ function config_facet_facetapi_default_facet_settings() {
       'display' => 'display',
       'active' => 0,
       'count' => 0,
+      'weeks' => 0,
+      'natural' => 0,
       'indexed' => 0,
     ),
     'sort_weight' => array(
       'active' => '-50',
       'count' => '-49',
       'display' => '-48',
+      'weeks' => '0',
+      'natural' => '0',
       'indexed' => '0',
     ),
     'sort_order' => array(
       'active' => '3',
       'count' => '3',
       'display' => '4',
+      'weeks' => '4',
+      'natural' => '4',
       'indexed' => '4',
     ),
     'empty_behavior' => 'none',
@@ -726,8 +867,90 @@ function config_facet_facetapi_default_facet_settings() {
       'value' => '',
       'format' => 'filtered_html',
     ),
+    'ranges' => '',
   );
   $export['search_api@node:block:field_course_form'] = $facet;
+
+  $facet = new stdClass();
+  $facet->disabled = FALSE; /* Edit this to true to make a default facet disabled initially */
+  $facet->api_version = 1;
+  $facet->name = 'search_api@node:block:field_course_form:name';
+  $facet->searcher = 'search_api@node';
+  $facet->realm = 'block';
+  $facet->facet = 'field_course_form:name';
+  $facet->enabled = TRUE;
+  $facet->settings = array(
+    'weight' => 0,
+    'widget' => 'facetapi_links',
+    'filters' => array(
+      'active_items' => array(
+        'status' => 0,
+        'weight' => '-50',
+      ),
+      'exclude_items' => array(
+        'status' => 0,
+        'weight' => '-49',
+      ),
+      'rewrite_items' => array(
+        'status' => 1,
+        'weight' => '-48',
+      ),
+      'narrow_results' => array(
+        'status' => 0,
+        'weight' => '-47',
+      ),
+      'show_if_minimum_items' => array(
+        'status' => 0,
+        'weight' => '-46',
+      ),
+      'deepest_level_items' => array(
+        'status' => 0,
+        'weight' => '-45',
+      ),
+    ),
+    'active_sorts' => array(
+      'active' => 'active',
+      'count' => 'count',
+      'display' => 'display',
+      'weeks' => 0,
+      'natural' => 0,
+      'indexed' => 0,
+    ),
+    'sort_weight' => array(
+      'active' => '-50',
+      'count' => '-49',
+      'display' => '-48',
+      'weeks' => '0',
+      'natural' => '0',
+      'indexed' => '0',
+    ),
+    'sort_order' => array(
+      'active' => '3',
+      'count' => '3',
+      'display' => '4',
+      'weeks' => '4',
+      'natural' => '4',
+      'indexed' => '4',
+    ),
+    'empty_behavior' => 'none',
+    'facet_more_text' => 'Show more',
+    'facet_fewer_text' => 'Show fewer',
+    'title_override' => 1,
+    'title' => '',
+    'soft_limit' => '20',
+    'nofollow' => 1,
+    'show_expanded' => 0,
+    'ranges' => 'Flexkurs-Flexkurs|Flexkurs',
+    'empty_text' => array(
+      'value' => '',
+      'format' => 'filtered_html',
+    ),
+    'exclude' => '',
+    'regex' => 0,
+    'show_minimum_items' => 2,
+    'rewrite_items' => 1,
+  );
+  $export['search_api@node:block:field_course_form:name'] = $facet;
 
   $facet = new stdClass();
   $facet->disabled = FALSE; /* Edit this to true to make a default facet disabled initially */
@@ -907,25 +1130,31 @@ function config_facet_facetapi_default_facet_settings() {
       'display' => 'display',
       'active' => 0,
       'count' => 0,
+      'weeks' => 0,
+      'natural' => 0,
       'indexed' => 0,
     ),
     'sort_weight' => array(
       'active' => '-50',
       'count' => '-49',
       'display' => '-48',
+      'weeks' => '0',
+      'natural' => '0',
       'indexed' => '0',
     ),
     'sort_order' => array(
       'active' => '3',
       'count' => '3',
       'display' => '4',
+      'weeks' => '4',
+      'natural' => '4',
       'indexed' => '4',
     ),
     'empty_behavior' => 'none',
     'facet_more_text' => 'Show more',
     'facet_fewer_text' => 'Show fewer',
     'title_override' => 1,
-    'title' => 'Inriktning',
+    'title' => 'Inriktningar för kurspaket',
     'soft_limit' => '20',
     'nofollow' => 1,
     'show_expanded' => 0,
@@ -933,6 +1162,7 @@ function config_facet_facetapi_default_facet_settings() {
       'value' => '',
       'format' => 'filtered_html',
     ),
+    'ranges' => '',
   );
   $export['search_api@node:block:field_course_orientation'] = $facet;
 
@@ -977,6 +1207,60 @@ function config_facet_facetapi_default_facet_settings() {
   $facet = new stdClass();
   $facet->disabled = FALSE; /* Edit this to true to make a default facet disabled initially */
   $facet->api_version = 1;
+  $facet->name = 'search_api@node:block:field_course_periods:value';
+  $facet->searcher = 'search_api@node';
+  $facet->realm = 'block';
+  $facet->facet = 'field_course_periods:value';
+  $facet->enabled = TRUE;
+  $facet->settings = array(
+    'weight' => 0,
+    'widget' => 'mal_facetapi_ranges',
+    'filters' => array(),
+    'active_sorts' => array(
+      'active' => 'active',
+      'count' => 'count',
+      'display' => 'display',
+      'weeks' => 0,
+      'natural' => 0,
+      'indexed' => 0,
+    ),
+    'sort_weight' => array(
+      'active' => '-50',
+      'count' => '-49',
+      'display' => '-48',
+      'weeks' => '0',
+      'natural' => '0',
+      'indexed' => '0',
+    ),
+    'sort_order' => array(
+      'active' => '3',
+      'count' => '3',
+      'display' => '4',
+      'weeks' => '4',
+      'natural' => '4',
+      'indexed' => '4',
+    ),
+    'empty_behavior' => 'none',
+    'facet_more_text' => 'Show more',
+    'facet_fewer_text' => 'Show fewer',
+    'title_override' => 1,
+    'title' => 'Tider',
+    'soft_limit' => '20',
+    'nofollow' => 1,
+    'show_expanded' => 0,
+    'ranges' => '21600-43200|Morning
+43200-61200|Afternoon
+61200-86400|Evening',
+    'empty_text' => array(
+      'value' => '',
+      'format' => 'filtered_html',
+    ),
+  );
+  $export['search_api@node:block:field_course_periods:value'] = $facet;
+
+  $facet = new stdClass();
+  $facet->disabled = FALSE; /* Edit this to true to make a default facet disabled initially */
+  $facet->api_version = 1;
   $facet->name = 'search_api@node:block:field_course_periods:value_formatted';
   $facet->searcher = 'search_api@node';
   $facet->realm = 'block';
@@ -984,7 +1268,7 @@ function config_facet_facetapi_default_facet_settings() {
   $facet->enabled = TRUE;
   $facet->settings = array(
     'weight' => 0,
-    'widget' => 'facetapi_ranges',
+    'widget' => 'mal_facetapi_ranges',
     'filters' => array(
       'active_items' => array(
         'status' => 0,
@@ -1045,8 +1329,7 @@ function config_facet_facetapi_default_facet_settings() {
     'show_expanded' => 0,
     'ranges' => '21600-43200|Morning
 43200-61200|Afternoon
-61200-86400|Evening
-NULL-NULL|Flex',
+61200-86400|Evening',
     'empty_text' => array(
       'value' => '',
       'format' => 'filtered_html',
@@ -1113,6 +1396,7 @@ NULL-NULL|Flex',
       'display' => 'display',
       'active' => 0,
       'count' => 0,
+      'weeks' => 0,
       'natural' => 0,
       'indexed' => 0,
     ),
@@ -1120,6 +1404,7 @@ NULL-NULL|Flex',
       'active' => '-50',
       'count' => '-49',
       'display' => '-48',
+      'weeks' => '0',
       'natural' => '0',
       'indexed' => '0',
     ),
@@ -1127,6 +1412,7 @@ NULL-NULL|Flex',
       'active' => '3',
       'count' => '3',
       'display' => '4',
+      'weeks' => '4',
       'natural' => '4',
       'indexed' => '4',
     ),
@@ -1138,11 +1424,12 @@ NULL-NULL|Flex',
     'show_expanded' => 0,
     'show_count' => 1,
     'title_override' => 1,
-    'title' => 'Skolor',
+    'title' => 'Utbildningsanordnare',
     'empty_text' => array(
       'value' => '',
       'format' => 'filtered_html',
     ),
+    'ranges' => '',
   );
   $export['search_api@node:block:field_course_school'] = $facet;
 
@@ -1283,7 +1570,7 @@ NULL-NULL|Flex',
     'facet_more_text' => 'Show more',
     'facet_fewer_text' => 'Show fewer',
     'title_override' => 1,
-    'title' => 'Inriktning',
+    'title' => 'Inriktningar för kurspaket',
     'soft_limit' => '20',
     'nofollow' => 1,
     'show_expanded' => 0,
@@ -1335,7 +1622,7 @@ NULL-NULL|Flex',
     'facet_more_text' => 'Show more',
     'facet_fewer_text' => 'Show fewer',
     'title_override' => 1,
-    'title' => 'Ämnesområden',
+    'title' => 'Ämnesområden för kurser',
     'soft_limit' => '20',
     'nofollow' => 1,
     'show_expanded' => 0,
@@ -1476,6 +1763,87 @@ NULL-NULL|Flex',
     'rewrite_items' => 1,
   );
   $export['search_api@node:block:field_course_type_education'] = $facet;
+
+  $facet = new stdClass();
+  $facet->disabled = FALSE; /* Edit this to true to make a default facet disabled initially */
+  $facet->api_version = 1;
+  $facet->name = 'search_api@node:block:global_searchable';
+  $facet->searcher = 'search_api@node';
+  $facet->realm = 'block';
+  $facet->facet = 'global_searchable';
+  $facet->enabled = TRUE;
+  $facet->settings = array(
+    'weight' => 0,
+    'widget' => 'facetapi_checkbox_links',
+    'filters' => array(
+      'active_items' => array(
+        'status' => 0,
+        'weight' => '-50',
+      ),
+      'exclude_items' => array(
+        'status' => 0,
+        'weight' => '-49',
+      ),
+      'rewrite_items' => array(
+        'status' => 1,
+        'weight' => '-48',
+      ),
+      'narrow_results' => array(
+        'status' => 0,
+        'weight' => '-47',
+      ),
+      'show_if_minimum_items' => array(
+        'status' => 0,
+        'weight' => '-46',
+      ),
+      'deepest_level_items' => array(
+        'status' => 0,
+        'weight' => '-45',
+      ),
+    ),
+    'active_sorts' => array(
+      'display' => 'display',
+      'active' => 0,
+      'count' => 0,
+      'weeks' => 0,
+      'natural' => 0,
+      'indexed' => 0,
+    ),
+    'sort_weight' => array(
+      'active' => '-50',
+      'count' => '-49',
+      'display' => '-48',
+      'weeks' => '0',
+      'natural' => '0',
+      'indexed' => '0',
+    ),
+    'sort_order' => array(
+      'active' => '3',
+      'count' => '3',
+      'display' => '4',
+      'weeks' => '4',
+      'natural' => '4',
+      'indexed' => '4',
+    ),
+    'empty_behavior' => 'none',
+    'facet_more_text' => 'Show more',
+    'facet_fewer_text' => 'Show fewer',
+    'title_override' => 1,
+    'title' => '',
+    'soft_limit' => '20',
+    'nofollow' => 1,
+    'show_expanded' => 0,
+    'ranges' => '',
+    'empty_text' => array(
+      'value' => '',
+      'format' => 'filtered_html',
+    ),
+    'exclude' => '',
+    'regex' => 0,
+    'show_minimum_items' => 2,
+    'rewrite_items' => 1,
+  );
+  $export['search_api@node:block:global_searchable'] = $facet;
 
   $facet = new stdClass();
   $facet->disabled = FALSE; /* Edit this to true to make a default facet disabled initially */
@@ -1750,6 +2118,58 @@ NULL-NULL|Flex',
     'title' => 'Title',
   );
   $export['search_api@node:block:title'] = $facet;
+
+  $facet = new stdClass();
+  $facet->disabled = FALSE; /* Edit this to true to make a default facet disabled initially */
+  $facet->api_version = 1;
+  $facet->name = 'search_api@node:block:type';
+  $facet->searcher = 'search_api@node';
+  $facet->realm = 'block';
+  $facet->facet = 'type';
+  $facet->enabled = TRUE;
+  $facet->settings = array(
+    'weight' => 0,
+    'widget' => 'facetapi_links',
+    'filters' => array(),
+    'active_sorts' => array(
+      'display' => 'display',
+      'active' => 0,
+      'count' => 0,
+      'weeks' => 0,
+      'natural' => 0,
+      'indexed' => 0,
+    ),
+    'sort_weight' => array(
+      'active' => '-50',
+      'count' => '-49',
+      'display' => '-48',
+      'weeks' => '0',
+      'natural' => '0',
+      'indexed' => '0',
+    ),
+    'sort_order' => array(
+      'active' => '3',
+      'count' => '3',
+      'display' => '4',
+      'weeks' => '4',
+      'natural' => '4',
+      'indexed' => '4',
+    ),
+    'empty_behavior' => 'none',
+    'facet_more_text' => 'Show more',
+    'facet_fewer_text' => 'Show fewer',
+    'title_override' => 1,
+    'title' => 'Enstaka kurs eller kurspaket (utbildningar)',
+    'soft_limit' => '20',
+    'nofollow' => 1,
+    'show_expanded' => 0,
+    'ranges' => '',
+    'empty_text' => array(
+      'value' => '',
+      'format' => 'filtered_html',
+    ),
+  );
+  $export['search_api@node:block:type'] = $facet;
 
   return $export;
 }

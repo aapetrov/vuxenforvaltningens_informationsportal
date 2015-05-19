@@ -3,8 +3,11 @@ language: php
 php:
   - 5.4
 
+services: memcache
+
 env:
   global:
+    - MEMCACHED__HOST=localhost
     - PHPCS_VERSION='1.5.5'
     - CODER_VERSION='dev-7.x-2.x'
 
@@ -69,7 +72,7 @@ install:
 
   # Build the current branch
   - cd drupal
-  - drush make --yes profiles/mal/drupal-org.make --contrib-destination=profiles/mal
+  - drush make --yes profiles/mal/drupal-org.make --contrib-destination=profiles/mal --no-cache
   - cd ../
 
   # Setup files
@@ -77,6 +80,7 @@ install:
 
   # Setup display for Selenium
   - export DISPLAY=:99.0
+  - cat /etc/init.d/xvfb
   - sh -e /etc/init.d/xvfb start
   - sleep 5
 
@@ -87,11 +91,12 @@ install:
 
    # Disable sendmail
   - echo sendmail_path=`which true` >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - echo 'extension = "memcache.so"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
 before_script:
   # Do the site install (either the current revision or old for the upgrade).
   - cd drupal
-  - drush si mal --db-url=mysql://root:@127.0.0.1/drupal --account-name=admin --account-pass=admin --site-mail=admin@example.com --site-name="City of malmo" --yes
+  - drush si mal --db-url=mysql://root:@127.0.0.1/drupal --account-name=admin --account-pass=admin --site-mail=admin@example.com --site-name="Vuxenutbildning Malmö" --yes
 
   - cd ..
   - curl -sSL https://raw.githubusercontent.com/moliware/travis-solr/master/travis-solr.sh | SOLR_VERSION=4.4.0 SOLR_CONFS="drupal/profiles/mal/solr-conf"  bash
