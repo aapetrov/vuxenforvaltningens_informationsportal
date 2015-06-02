@@ -364,15 +364,15 @@ class FeatureContext extends DrupalContext {
     }
   }
 
-  /**
-   * @Given /^I type "([^"]*)" in "([^"]*)" WYSIWYG editor$/
-   */
-  public function iTypeInWYSIWYGEditor($text, $selector)
-  {
-    $this->getSession()->getDriver()->evaluateScript(
-        "Drupal.wysiwyg.instances['" . $selector . "'].insert('" . $text . "')"
-    );
-  }
+//  /**
+//   * @Given /^I type "([^"]*)" in "([^"]*)" WYSIWYG editor$/
+//   */
+//  public function iTypeInWYSIWYGEditor($text, $selector)
+//  {
+//    $this->getSession()->getDriver()->evaluateScript(
+//        "Drupal.wysiwyg.instances['" . $selector . "'].insert('" . $text . "')"
+//    );
+//  }
 
   /**
    * Check the order of values in given selector.
@@ -463,4 +463,60 @@ class FeatureContext extends DrupalContext {
       }
     }
   }
+
+  /**
+   * Use english locale for the tests.
+   *
+   * @Then /^I switch to swedish$/
+   *
+   */
+  public function beforeCurrentScenario() {
+    $this->getSession()->visit($this->getMinkParameter('base_url'));
+    $this->getSession()->setCookie('language', 'sv');
+  }
+
+  /**
+   * @When I select the first autocomplete option for :prefix on the :field field
+   */
+  public function iSelectFirstAutocomplete($prefix, $field) {
+    $field = $this->fixStepArgument($field);
+    $session = $this->getSession();
+    $page = $session->getPage();
+    $element = $page->findField($field);
+    if (!$element) {
+      throw new ElementNotFoundException($session, NULL, 'named', $field);
+    }
+
+    $page->fillField($field, $prefix);
+
+    $xpath = $element->getXpath();
+    $driver = $session->getDriver();
+    $prefix = $this->fixStepArgument($prefix);
+
+    $chars = str_split($prefix);
+
+    $last_char = array_pop($chars);
+
+    // autocomplete.js uses key down/up events directly.
+    $driver->keyDown($xpath, 8);
+    $driver->keyUp($xpath, 8);
+
+    $driver->keyDown($xpath, $last_char);
+    $driver->keyUp($xpath, $last_char);
+
+    // Wait for AJAX to finish.
+    $this->getSession()->wait(500, '(typeof(jQuery)=="undefined" || (0 === jQuery.active && 0 === jQuery(\':animated\').length))');
+
+    // Press the down arrow to select the first option.
+    $driver->keyDown($xpath, 40);
+    $driver->keyUp($xpath, 40);
+
+    // Press the Enter key to confirm selection, copying the value into the field.
+    $driver->keyDown($xpath, 13);
+    $driver->keyUp($xpath, 13);
+
+    // Wait for AJAX to finish.
+    $this->getSession()->wait(500, '(typeof(jQuery)=="undefined" || (0 === jQuery.active && 0 === jQuery(\':animated\').length))');
+  }
+
 }
