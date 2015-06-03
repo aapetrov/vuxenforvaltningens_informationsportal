@@ -7,6 +7,7 @@
 
 use Behat\Behat\Event\BaseScenarioEvent;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\DrupalExtension\Context\DrupalContext;
 
 use Behat\Behat\Context\Step\Then;
@@ -420,5 +421,94 @@ class FeatureContext extends RawPropeopleContext implements SnippetAcceptingCont
     );
   }
 
+  /**
+   * Checks, if a button with id|name|title|alt|value exists or not and pressess it.
+   *
+   * @Given /^I press "(?P<button>[^"]*)" in the area with selector "([^"]*)"$/
+   *
+   * @param $button
+   *   string The id|name|title|alt|value of the button to be pressed.
+   * @param $region
+   *   string The region in which the button should be pressed.
+   *
+   * @throws \Exception
+   *   If region or button within it cannot be found.
+   */
+  public function assertAreaPressButton($button, $area) {
+    $session = $this->getSession();
+    $regionObj = $session->getPage()->find('css', $area);
+
+    $buttonObj = $regionObj->findButton($button);
+    if (empty($buttonObj)) {
+      throw new \Exception(sprintf("The button '%s' was not found in the region '%s' on the page %s", $button, $area, $this->getSession()->getCurrentUrl()));
+    }
+    $regionObj->pressButton($button);
+  }
+
+  /**
+   * @Then /^I should see only "([^"]*)" user content$/
+   */
+  public function iShouldSeeOnlyMyContent($name) {
+    $session = $this->getSession();
+    $regionObj = $session->getPage()->findAll('css', '.username');
+    foreach($regionObj as $content) {
+      if ($content->getText() != $name) {
+        throw new \Exception(sprintf("admin/content contains content from %s but should only from %s", $content->getText(), $name));
+      }
+    }
+  }
+
+  /**
+   * Use english locale for the tests.
+   *
+   * @Then /^I switch to swedish$/
+   *
+   */
+  public function beforeCurrentScenario() {
+    $this->getSession()->visit($this->getMinkParameter('base_url'));
+    $this->getSession()->setCookie('language', 'sv');
+  }
+
+  /**
+   * @When I select the first autocomplete option for :prefix on the :field field
+   */
+  public function iSelectFirstAutocomplete($prefix, $field) {
+    $session = $this->getSession();
+    $page = $session->getPage();
+    $element = $page->findField($field);
+    if (!$element) {
+      throw new ElementNotFoundException($session, NULL, 'named', $field);
+    }
+
+    $page->fillField($field, $prefix);
+
+    $xpath = $element->getXpath();
+    $driver = $session->getDriver();
+
+    $chars = str_split($prefix);
+
+    $last_char = array_pop($chars);
+
+    // autocomplete.js uses key down/up events directly.
+    $driver->keyDown($xpath, 8);
+    $driver->keyUp($xpath, 8);
+
+    $driver->keyDown($xpath, $last_char);
+    $driver->keyUp($xpath, $last_char);
+
+    // Wait for AJAX to finish.
+    $this->getSession()->wait(500, '(typeof(jQuery)=="undefined" || (0 === jQuery.active && 0 === jQuery(\':animated\').length))');
+
+    // Press the down arrow to select the first option.
+    $driver->keyDown($xpath, 40);
+    $driver->keyUp($xpath, 40);
+
+    // Press the Enter key to confirm selection, copying the value into the field.
+    $driver->keyDown($xpath, 13);
+    $driver->keyUp($xpath, 13);
+
+    // Wait for AJAX to finish.
+    $this->getSession()->wait(500, '(typeof(jQuery)=="undefined" || (0 === jQuery.active && 0 === jQuery(\':animated\').length))');
+  }
 
 }
